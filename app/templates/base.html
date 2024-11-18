@@ -1,0 +1,52 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Электронная библиотека</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="{{ url_for('index') }}">Главная</a></li>
+            {% if current_user.is_authenticated %}
+                <li><a href="{{ url_for('logout') }}">Выйти</a> ({{ current_user.first_name }} {{ current_user.last_name }})</li>
+            {% else %}
+                <li><a href="{{ url_for('login') }}">Войти</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+
+    <div class="content">
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <div class="flash-messages">
+              {% for message in messages %}
+                <p>{{ message }}</p>
+              {% endfor %}
+            </div>
+          {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+    </div>
+
+    <footer>
+        <p>Электронная библиотека </p>
+    </footer>
+
+    <!-- Модальное окно для удаления книги -->
+    <div id="deleteModal" class="modal">
+      <div class="modal-content">
+        <span id="modalTitle"></span>
+        <div class="modal-buttons">
+          <a href="#" id="confirmDelete" class="btn btn-danger">Да</a>
+          <button id="cancelDelete" class="btn btn-secondary">Нет</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/Modall.js') }}"></script>
+</body>
+</html>
